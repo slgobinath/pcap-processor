@@ -1,1 +1,2 @@
 pyshark
+kafka-python>=1.4.2

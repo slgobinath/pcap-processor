@@ -16,26 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import http.client
 import json
+
+from kafka import KafkaProducer
 
 from pcap_processor.sink import sink, Sink
 
 
-@sink(name="http", enabled=True)
-class HttpSink(Sink):
+@sink(name="kafka", enabled=True)
+class KafkaSink(Sink):
 
     def __init__(self):
-        self.headers = {"Content-type": "application/json"}
-        self.endpoint = "/"
-        self.connection = None
+        self.bootstrap = "localhost:9092"
+        self.producer = None
 
     def init(self):
-        self.connection = http.client.HTTPConnection("localhost", 8080)
+        self.producer = KafkaProducer(bootstrap_servers=self.bootstrap, key_serializer=str.encode,
+                                      value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     def write(self, packet: dict):
-        self.connection.request("POST", self.endpoint, json.dumps(packet), self.headers)
-        self.connection.getresponse().close()
+        self.producer.send("PacketStream", key="pcap-processor", value=packet)
 
     def close(self):
-        self.connection.close()
+        self.producer.close()

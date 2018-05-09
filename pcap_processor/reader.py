@@ -41,7 +41,8 @@ class PcapReader:
             has_transport = pcap.transport_layer is not None
             packet_time = float(pcap.sniff_timestamp)
             packet_dict = dict()
-            packet_dict["highest_layer"] = pcap.highest_layer.upper()
+            highest_layer = pcap.highest_layer.upper()
+            packet_dict["highest_layer"] = highest_layer
             if has_transport:
                 packet_dict["transport_layer"] = pcap.transport_layer.upper()
             else:
@@ -50,7 +51,7 @@ class PcapReader:
                 packet_dict["dst_port"] = -1
                 packet_dict["transport_flag"] = -1
 
-            packet_dict["timestamp"] = packet_time
+            packet_dict["timestamp"] = int(packet_time * 1000)
             packet_dict["time"] = str(pcap.sniff_time)
             packet_dict["packet_length"] = int(pcap.length)
 
@@ -76,6 +77,8 @@ class PcapReader:
                     else:
                         packet_dict["transport_flag"] = -1
 
+                elif "FTP" == layer_name:
+                    packet_dict["data"] = str(layer._all_fields)
                 if "src_ip" not in packet_dict:
                     continue
 
