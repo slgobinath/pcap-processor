@@ -7,7 +7,7 @@ I also have written sinks to write the pcap file to console, csv file or http en
 
 ```bash
 usage: pcap-processor [-h] [--map {length,protocol}]
-                      [--sink {csv,http,console}] [--version]
+                      [--sink {console,kafka,http,csv,grpc}] [--version]
                       file [file ...]
 
 Read and process pcap files using this nifty tool.
@@ -20,7 +20,7 @@ optional arguments:
   --map {length,protocol}
                         enable a mapper with the given name. You can use this
                         option multiple times to enable more than one mappers
-  --sink {csv,http,console}
+  --sink {console,kafka,http,csv,grpc}
                         enable a sink with the given name. You can use this
                         option multiple times to enable more than one sinks
   --version             show program's version number and exit
@@ -82,3 +82,21 @@ model detects anomalous raw TCP packets which are part of intrusions with
 neural network models such as LSTM."
 }
 ```
+
+## Use Cases
+
+Read a pcap file and send all packets to Apache Kafka:
+
+```bash
+python3 -m pcap_processor --sink kafka input.pcap 
+```
+
+Read a pcap file, map protocols and write them to a CSV file:
+
+```bash
+python3 -m pcap_processor --map protocol --sink csv input.pcap 
+```
+
+Mappers and sinks have their own properties. Please modify them in the relevant `plugins/<file>.py`.
+
+For example, to change the output CSV file location, modify the `self.path = "packets.csv"` in `pcap_processor/plugins/csv_sink.py`.

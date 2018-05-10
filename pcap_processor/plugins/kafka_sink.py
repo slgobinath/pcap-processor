@@ -23,11 +23,13 @@ from kafka import KafkaProducer
 from pcap_processor.sink import sink, Sink
 
 
-@sink(name="kafka", enabled=True)
+@sink(name="kafka", enabled=False)
 class KafkaSink(Sink):
 
     def __init__(self):
         self.bootstrap = "localhost:9092"
+        self.topic = "PacketStream"
+        self.key = "pcap-processor"
         self.producer = None
 
     def init(self):
@@ -35,7 +37,7 @@ class KafkaSink(Sink):
                                       value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     def write(self, packet: dict):
-        self.producer.send("PacketStream", key="pcap-processor", value=packet)
+        self.producer.send(self.topic, key=self.key, value=packet)
 
     def close(self):
         self.producer.close()

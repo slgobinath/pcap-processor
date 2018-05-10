@@ -1,0 +1,15 @@
+syntax = "proto3";
+package com.javahelps.wisdom.service.gprc;
+
+service Wisdom {
+
+    rpc send (Event) returns (Event);
+
+    rpc feed (stream Event) returns (Event);
+
+    rpc receive (Event) returns (stream Event);
+}
+
+message Event {
+    string data = 1;
+}

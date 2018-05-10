@@ -3,7 +3,10 @@ import os
 import setuptools
 
 REQUIRES = [
-    'pyshark'
+    "pyshark",
+    "kafka-python",
+    "grpcio",
+    "grpcio-tools"
 ]
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))

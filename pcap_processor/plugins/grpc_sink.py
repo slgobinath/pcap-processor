@@ -16,28 +16,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import http.client
 import json
 
+import grpc
+
+from pcap_processor.grpc import WisdomGrpcService_pb2
+from pcap_processor.grpc import WisdomGrpcService_pb2_grpc
 from pcap_processor.sink import sink, Sink
 
 
-@sink(name="http", enabled=False)
-class HttpSink(Sink):
+@sink(name="grpc", enabled=False)
+class GrpcSink(Sink):
 
     def __init__(self):
-        self.host = "localhost"
-        self.port = 8080
-        self.headers = {"Content-type": "application/json"}
-        self.endpoint = "/"
-        self.connection = None
+        self.endpoint = "localhost:8081"
+        self.channel = None
+        self.stub = None
 
     def init(self):
-        self.connection = http.client.HTTPConnection(self.host, self.port)
+        self.channel = grpc.insecure_channel(self.endpoint)
+        self.stub = WisdomGrpcService_pb2_grpc.WisdomStub(self.channel)
 
     def write(self, packet: dict):
-        self.connection.request("POST", self.endpoint, json.dumps(packet), self.headers)
-        self.connection.getresponse().close()
+        self.stub.send(WisdomGrpcService_pb2.Event(data=json.dumps(packet)))
 
     def close(self):
-        self.connection.close()
+        self.stub = None
+        self.channel = None

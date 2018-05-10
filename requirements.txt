@@ -1,2 +1,4 @@
 pyshark
-kafka-python>=1.4.2
+kafka-python
+grpcio
+grpcio-tools
