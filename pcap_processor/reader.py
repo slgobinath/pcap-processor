@@ -101,18 +101,24 @@ class PcapReader:
                     try:
                         self._read_pcap(pcap_file)
                     except TSharkCrashException:
-                        commons.error("Error in parsing %s pcap file" % pcap_file)
+                        commons.error(
+                            "Error in parsing %s pcap file" % pcap_file)
         else:
-            commons.error("Path %s is neither a file nor a directory" % self.path)
+            commons.error(
+                "Path %s is neither a file nor a directory" % self.path)
 
     def read(self):
         self.active = True
         SinkManager.init()
-        if type(self.path) is list:
-            for file in self.path:
-                self._read_path(file)
-        else:
-            self._read_path(self.path)
+        try:
+            if type(self.path) is list:
+                for file in self.path:
+                    self._read_path(file)
+            else:
+                self._read_path(self.path)
+        except KeyboardInterrupt:
+            print("Stop the reader")
+            pass
         SinkManager.close()
 
     def stop(self):
