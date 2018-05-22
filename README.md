@@ -5,7 +5,7 @@ This tool can read pcap files, process them internally and write them to one or 
 Currently there are mappers written for pcap length conversion and protocol normalization.
 I also have written sinks to write the pcap file to console, csv file or http endpoint.
 
-```bash
+```text
 usage: pcap-processor [-h] [--map {length,protocol}]
                       [--sink {console,kafka,http,csv,grpc}] [--version]
                       file [file ...]
@@ -39,7 +39,7 @@ sudo apt install tshark
 Install Python dependencies using the following command:
 
 ```bash
-pip3 -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Research Work
