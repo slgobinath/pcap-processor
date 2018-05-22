@@ -46,7 +46,7 @@ class PcapReader:
             if has_transport:
                 packet_dict["transport_layer"] = pcap.transport_layer.upper()
             else:
-                packet_dict["transport_layer"] = "None"
+                packet_dict["transport_layer"] = "NONE"
                 packet_dict["src_port"] = -1
                 packet_dict["dst_port"] = -1
                 packet_dict["transport_flag"] = -1
@@ -54,6 +54,7 @@ class PcapReader:
             packet_dict["timestamp"] = int(packet_time * 1000)
             packet_dict["time"] = str(pcap.sniff_time)
             packet_dict["packet_length"] = int(pcap.length)
+            packet_dict["data"] = ""
 
             for layer in pcap.layers:
                 layer_name = layer.layer_name.upper()
@@ -79,9 +80,8 @@ class PcapReader:
 
                 elif "FTP" == layer_name:
                     packet_dict["data"] = str(layer._all_fields)
-                if "src_ip" not in packet_dict:
-                    continue
-
+            if "src_ip" not in packet_dict:
+                continue
             # Map packet attributes
             packet_dict = MapperManager.map(packet_dict)
             SinkManager.write(packet_dict)

@@ -26,7 +26,7 @@ class CsvSink(Sink):
 
     def __init__(self):
         self.attributes = ['highest_layer', 'transport_layer', 'src_ip', 'dst_ip', 'src_port', 'dst_port',
-                           'ip_flag', 'packet_length', 'transport_flag', 'time', 'timestamp', 'geo_country']
+                           'ip_flag', 'packet_length', 'transport_flag', 'time', 'timestamp', 'geo_country', 'data']
         self.path = "packets.csv"
 
     def init(self):
