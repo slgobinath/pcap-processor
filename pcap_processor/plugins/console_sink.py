@@ -22,9 +22,6 @@ from pcap_processor.sink import sink, Sink
 @sink(name="console", enabled=True)
 class ConsoleSink(Sink):
 
-    def close(self):
-        pass
-
     def write(self, packet: dict):
         print(packet)
 
