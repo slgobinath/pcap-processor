@@ -28,7 +28,7 @@ optional arguments:
 
 ## Note
 
-Currently the `pcap-processor` reads only packets with IP and IPV6 layers. Feel free to modify the code based on your requirement. If you find any enhancement, please send a Pull Request.
+Currently the `pcap-processor` reads only packets with IP or IPV6 layers. Feel free to modify the code based on your requirement. If you find any enhancement, please send a Pull Request.
 
 ## Requirements
 
