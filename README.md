@@ -26,6 +26,10 @@ optional arguments:
   --version             show program's version number and exit
 ```
 
+## Note
+
+Currently the `pcap-processor` reads only packets with IP and IPV6 layers. Feel free to modify the code based on your requirement. If you find any enhancement, please send a Pull Request.
+
 ## Requirements
 
 pcap-reader relies on external command line tool: `tshark` and some Python modules.
@@ -88,13 +92,13 @@ neural network models such as LSTM."
 Read a pcap file and send all packets to Apache Kafka:
 
 ```bash
-python3 -m pcap_processor --sink kafka input.pcap 
+python3 -m pcap_processor --sink kafka samples/cicids_2017.pcap
 ```
 
 Read a pcap file, map protocols and write them to a CSV file:
 
 ```bash
-python3 -m pcap_processor --map protocol --sink csv input.pcap 
+python3 -m pcap_processor --map protocol --sink csv samples/cicids_2017.pcap
 ```
 
 Mappers and sinks have their own properties. Please modify them in the relevant `plugins/<file>.py`.
